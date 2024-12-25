@@ -35,7 +35,7 @@ always @(posedge clk) begin
     end
 end */
 
-local param WAIT_FOR_START_CLOCKS = 27_000_000 * 5; // 1 second = 27M cycles
+localparam WAIT_FOR_START_CLOCKS = (27_000_000 * 5); // 1 second = 27M cycles
 reg [31:0] wait_for_start_counter;
 
 always @(posedge clk) begin
