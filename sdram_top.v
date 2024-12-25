@@ -26,10 +26,25 @@ module sdram_top
 
 reg sys_resetn = 0;
 reg start;      // press s1 to start the system
+
+/*
 always @(posedge clk) begin
     if (s1) begin
         start <= 1;
         sys_resetn <= 1;
+    end
+end */
+
+local param WAIT_FOR_START_CLOCKS = 27_000_000 * 5; // 1 second = 27M cycles
+reg [31:0] wait_for_start_counter;
+
+always @(posedge clk) begin
+    if (wait_for_start_counter == WAIT_FOR_START_CLOCKS) begin
+        start <= 1;
+        sys_resetn <= 1;
+        wait_for_start_counter <= wait_for_start_counter + 1;
+    end else if (wait_for_start_counter < WAIT_FOR_START_CLOCKS) begin
+        wait_for_start_counter <= wait_for_start_counter + 1;
     end
 end
 
